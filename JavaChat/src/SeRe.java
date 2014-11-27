@@ -9,6 +9,6 @@ import java.net.ServerSocket;
  *
  */
 public abstract class SeRe {
-	protected ServerSocket ss;
+	protected ServerSocket ss= null;
 	
 }
