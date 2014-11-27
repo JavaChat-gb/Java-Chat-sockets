@@ -1,11 +1,9 @@
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-
-/**
- * 
- */
+import java.net.SocketAddress;
 
 /**
  * @author Erik
@@ -29,9 +27,15 @@ public class SeRe {
 	 */
 	public SeRe(String host, int port, RecClient a) {
 		this.cAPP = a;
-
 		try {
-			ss = new ServerSocket(port);
+			if(!host.equals("")){
+
+				ss = new ServerSocket(port);
+				this.csocket = ss.accept();
+
+			}else{
+				csocket = new Socket(host, port);
+			}
 		} catch (IOException e) {
 
 		} finally {
@@ -43,15 +47,15 @@ public class SeRe {
 	}
 
 	/**
-	 * Sets up a standard send-recive Connection to port 9898
-	 * 
+	 * Sets up a standard send-recive Connection to port 9898<br/>
+	 * Waits that someone connects
 	 * @param host
 	 *            Chat-opponent's IP ex. "192.168.1.14"
 	 * @param a
 	 *            Messagehandler gets the messages delivered
 	 */
-	public SeRe(String host, RecClient a) {
-		this(host, port, a);
+	public SeRe(RecClient a) {
+		this("", port, a);
 	}
 
 	/**
@@ -61,13 +65,13 @@ public class SeRe {
 	 * 
 	 * @category Send-Recive
 	 */
-	private void recive() {
+	public void recive() {
 
 		try {
 			InputStream is = csocket.getInputStream();
 			String msgs = "", name = "", s = "";// msgs contains the message,
-												// name contains the sender
-												// name, s is a temp. var.
+			// name contains the sender
+			// name, s is a temp. var.
 			for (int i; (i = is.read()) != -1; s += (char) i)
 				// Liest zeichen vom Stream ein und fuegt diese dem string s an
 
@@ -81,6 +85,26 @@ public class SeRe {
 			is.close();
 
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void send(MsgData md){
+		try{
+		OutputStream out = csocket.getOutputStream();
+		byte[] b = new byte[md.getSender().length()+md.getMsg().length()+3];
+		b[0]=(byte)'<';
+		for(int i = 0; i< md.getSender().length() ;i++)
+			b[i+1]=(byte)md.getSender().charAt(i);
+		b[md.getSender().length()+1]=(byte)'>';
+		b[md.getSender().length()+2]=(byte)'|';//bisschen Brainfuck aber funktioniert :P
+		int tempx = md.getSender().length()+3;
+		for(int i = 0; i< md.getMsg().length() ;i++){
+			b[tempx+i]=(byte)md.getMsg().charAt(i);
+		}
+		out.write(b);
+		}catch(IOException e){
 			e.printStackTrace();
 		}
 
