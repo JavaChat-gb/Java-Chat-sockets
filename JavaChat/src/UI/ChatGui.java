@@ -19,10 +19,15 @@ public class ChatGui extends JFrame {
 	private AList acl= new AList();
 	
 	public ChatGui() {
-		this.setSize(300, 500);
+		this.setSize(400, 500);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.init();
+		this.pack();
+		this.setVisible(true);
+		this.setResizable(false);
+		this.setSize(this.getWidth(), 500);
 	}
-	public void init(){
+	public void init(){		
 		connectSettings = new JPanel();
 		sendBar =new JPanel();
 		chatHist = new JPanel();
@@ -35,12 +40,16 @@ public class ChatGui extends JFrame {
 		connectb = new JButton("Connect");
 		connectb.addActionListener(acl);
 		
-		sip = new JTextField("IP");
-		port = new JTextField("Port");
-		uname = new JTextField("Username");
+		sip = new JTextField(15);
+		sip.setText("IP");
+		port = new JTextField(7);
+		port.setText("Port");
+		uname = new JTextField(15);
+		uname.setText("Username");
 		smsg = new JTextField("Nachricht");
 		
 		chatLog = new JTextArea();
+		chatLog.setEditable(false);
 		chatHist.add(chatLog);
 		
 		connectSettings.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -60,15 +69,19 @@ public class ChatGui extends JFrame {
 		 * Put it all together
 		 */
 		this.setLayout(new BorderLayout());
-		this.add(chatHist);
+		this.add(chatLog);
 		this.add(sendBar,"South");
 		this.add(connectbar,"North");
 		
 	}
 	
+	public void addMsg(String s){
+		chatLog.setText(chatLog.getText()+System.lineSeparator()+s);
+	}
 	
-	
-	
+	public static void main(String[] args) {
+		new ChatGui();
+	}
 	public class AList implements ActionListener{
 
 		@Override
