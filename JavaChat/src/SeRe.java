@@ -104,6 +104,7 @@ public class SeRe {
 			b[tempx+i]=(byte)md.getMsg().charAt(i);
 		}
 		out.write(b);
+		out.close();
 		}catch(IOException e){
 			e.printStackTrace();
 		}
