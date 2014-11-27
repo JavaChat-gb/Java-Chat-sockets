@@ -48,10 +48,9 @@ public class SeRe {
 	}
 
 	/**
-	 * Sets up a standard send-recive Connection to port 9898<br/>
+	 * Sets up a standard send-recive Connection to port 9898 <br>
 	 * Waits that someone connects
-	 * @param host
-	 *            Chat-opponent's IP ex. "192.168.1.14"
+
 	 * @param a
 	 *            Messagehandler gets the messages delivered
 	 */
@@ -64,7 +63,6 @@ public class SeRe {
 	 * Data(Class) object. This object gets transported to the RecClient
 	 * specified in the Constuctor.
 	 * 
-	 * @category Send-Recive
 	 */
 	public void recive() {
 
