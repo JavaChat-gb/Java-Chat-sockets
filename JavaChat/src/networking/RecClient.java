@@ -1,5 +1,5 @@
 package networking;
 
 public interface RecClient {
-	public void addMSG(Object z);
+	public void addMSG(MsgData z);
 }

@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import networking.MsgData;
+
 public class ChatGui extends JFrame {
 	private JPanel connectSettings, sendBar, chatHist, connectbar;
 	private JButton send, options, connectb;
@@ -33,20 +35,20 @@ public class ChatGui extends JFrame {
 		chatHist = new JPanel();
 		connectbar = new JPanel();
 		
-		send = new JButton("Send");
+		send = new JButton(Messages.getString("ChatGui.0")); //$NON-NLS-1$
 		send.addActionListener(acl);
-		options = new JButton("Options");
+		options = new JButton(Messages.getString("ChatGui.1")); //$NON-NLS-1$
 		options.addActionListener(acl);
-		connectb = new JButton("Connect");
+		connectb = new JButton(Messages.getString("ChatGui.2")); //$NON-NLS-1$
 		connectb.addActionListener(acl);
 		
 		sip = new JTextField(15);
-		sip.setText("IP");
+		sip.setText(Messages.getString("ChatGui.3")); //$NON-NLS-1$
 		port = new JTextField(7);
-		port.setText("Port");
+		port.setText(Messages.getString("ChatGui.4")); //$NON-NLS-1$
 		uname = new JTextField(15);
-		uname.setText("Username");
-		smsg = new JTextField("Nachricht");
+		uname.setText(Messages.getString("ChatGui.5")); //$NON-NLS-1$
+		smsg = new JTextField(Messages.getString("ChatGui.6")); //$NON-NLS-1$
 		
 		chatLog = new JTextArea();
 		chatLog.setEditable(false);
@@ -58,25 +60,25 @@ public class ChatGui extends JFrame {
 		connectSettings.add(uname);
 		
 		connectbar.setLayout(new BorderLayout());
-		connectbar.add(connectSettings,"Center");
-		connectbar.add(connectb,"South");
+		connectbar.add(connectSettings,Messages.getString("ChatGui.7")); //$NON-NLS-1$
+		connectbar.add(connectb,Messages.getString("ChatGui.8")); //$NON-NLS-1$
 		
 		sendBar.setLayout(new BorderLayout());
-		sendBar.add(options,"West");
-		sendBar.add(smsg,"Center");
-		sendBar.add(send,"East");
+		sendBar.add(options,Messages.getString("ChatGui.9")); //$NON-NLS-1$
+		sendBar.add(smsg,Messages.getString("ChatGui.10")); //$NON-NLS-1$
+		sendBar.add(send,Messages.getString("ChatGui.11")); //$NON-NLS-1$
 		/**
 		 * Put it all together
 		 */
 		this.setLayout(new BorderLayout());
 		this.add(chatLog);
-		this.add(sendBar,"South");
-		this.add(connectbar,"North");
+		this.add(sendBar,Messages.getString("ChatGui.12")); //$NON-NLS-1$
+		this.add(connectbar,Messages.getString("ChatGui.13")); //$NON-NLS-1$
 		
 	}
 	
-	public void addMsg(String s){
-		chatLog.setText(chatLog.getText()+System.lineSeparator()+s);
+	public void addMsg(MsgData m){
+		chatLog.setText(chatLog.getText()+System.lineSeparator()+m.getSender()+" : "+m.getMsg());
 	}
 	
 	public static void main(String[] args) {

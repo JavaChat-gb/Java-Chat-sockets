@@ -1,4 +1,6 @@
+import networking.MsgData;
+
 
 public interface RecClient {
-	public void addMSG(Object z);
+	public void addMSG(MsgData z);
 }
