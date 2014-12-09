@@ -12,7 +12,7 @@ import java.net.Socket;
  */
 public class SeRe {
 	private ServerSocket ss = null;
-	private Socket csocket;
+	private Socket csocket =null;
 	private RecClient cAPP;
 	public static final int port = 9898;
 
@@ -29,22 +29,24 @@ public class SeRe {
 	public SeRe(String host, int port, RecClient a) {
 		this.cAPP = a;
 		try {
-			if(!host.equals("")){
+			if(host.equals("")){
 
 				ss = new ServerSocket(port);
-				this.csocket = ss.accept();
+				while(csocket == null){
+					this.csocket = ss.accept();
+				}
 
 			}else{
 				csocket = new Socket(host, port);
 			}
 		} catch (IOException e) {
-
-		} finally {
+			System.err.println("SocketERror  "+e.getMessage());
+		} /**finally {
 			try {
 				ss.close();
 			} catch (IOException e) {
 			}
-		}
+		}**/
 	}
 
 	/**
@@ -84,6 +86,7 @@ public class SeRe {
 			is.close();
 
 		} catch (Exception e) {
+			System.err.println("Recive errror");
 			e.printStackTrace();
 		}
 
@@ -91,23 +94,33 @@ public class SeRe {
 
 	public void send(MsgData md){
 		try{
-		OutputStream out = csocket.getOutputStream();
-		byte[] b = new byte[md.getSender().length()+md.getMsg().length()+3];
-		b[0]=(byte)'<';
-		for(int i = 0; i< md.getSender().length() ;i++)
-			b[i+1]=(byte)md.getSender().charAt(i);
-		b[md.getSender().length()+1]=(byte)'>';
-		b[md.getSender().length()+2]=(byte)'|';//bisschen Brainfuck aber funktioniert :P
-		int tempx = md.getSender().length()+3;
-		for(int i = 0; i< md.getMsg().length() ;i++){
-			b[tempx+i]=(byte)md.getMsg().charAt(i);
-		}
-		out.write(b);
-		out.close();
+			OutputStream out = csocket.getOutputStream();
+			byte[] b = new byte[md.getSender().length()+md.getMsg().length()+3];
+			b[0]=(byte)'<';
+			for(int i = 0; i< md.getSender().length() ;i++)
+				b[i+1]=(byte)md.getSender().charAt(i);
+			b[md.getSender().length()+1]=(byte)'>';
+			b[md.getSender().length()+2]=(byte)'|';//bisschen Brainfuck aber funktioniert :P
+			int tempx = md.getSender().length()+3;
+			for(int i = 0; i< md.getMsg().length() ;i++){
+				b[tempx+i]=(byte)md.getMsg().charAt(i);
+			}
+			out.write(b);
+			out.close();
 		}catch(IOException e){
 			e.printStackTrace();
 		}
 
+	}
+	public void disc(){
+		try{
+		this.csocket.getOutputStream().close();
+		this.csocket.getInputStream().close();
+		this.csocket.close();
+		}catch(Exception e){
+			System.out.println("Error on closing socket");
+			System.out.println("All Streams ended");
+		}
 	}
 
 }
