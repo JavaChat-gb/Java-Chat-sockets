@@ -32,15 +32,15 @@ public class SeRe {
 			if(host.equals("")){
 
 				ss = new ServerSocket(port);
-				while(csocket == null){
 					this.csocket = ss.accept();
-				}
 
 			}else{
 				csocket = new Socket(host, port);
+				System.err.println(csocket.isConnected());
 			}
 		} catch (IOException e) {
 			System.err.println("SocketERror  "+e.getMessage());
+			e.printStackTrace();
 		} /**finally {
 			try {
 				ss.close();

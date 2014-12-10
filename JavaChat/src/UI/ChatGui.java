@@ -12,6 +12,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.StyledEditorKit.BoldAction;
 
+import Filter.Boese;
+import Filter.Doubleizer;
+import Filter.Filter;
 import core.JavaChat;
 import networking.MsgData;
 import networking.RecClient;
@@ -86,7 +89,7 @@ public class ChatGui extends JFrame {
 
 	public void addMsg(MsgData m) {
 		chatLog.setText(chatLog.getText() + System.lineSeparator()
-				+ m.getSender() + " : " + m.getMsg());
+				+ m.getSender() + Messages.getString("ChatGui.14") + m.getMsg()); //$NON-NLS-1$
 	}
 
 	/**
@@ -99,21 +102,65 @@ public class ChatGui extends JFrame {
 			if (e.getSource() == connectb) {
 				if (!connected) {
 					mother.connect(sip.getText(), port.getText());
-					connectb.setText("Disconnect");
+					connectb.setText(Messages.getString("ChatGui.15")); //$NON-NLS-1$
 					connected = true;
 				} else {
 					mother.disconnect();
-					connectb.setText("Connect");
+					connectb.setText(Messages.getString("ChatGui.16")); //$NON-NLS-1$
 					connected = false;
 				}
 
 			}
 			if (e.getSource() == send) {
 				mother.write(new MsgData(uname.getText(), smsg.getText()));
-				smsg.setText("");
+				smsg.setText(Messages.getString("ChatGui.17")); //$NON-NLS-1$
 			}
 
 		}
 
+	}
+	public class JOptions extends JFrame implements ActionListener{
+		private JPanel cent;
+		private JButton[] butts = new JButton[3];
+		private boolean[] options=new boolean[]{false, false}; 
+		ChatGui back;
+		Filter f;
+		public JOptions(ChatGui back) {
+			this.back = back;
+			this.setSize(300, 300);
+			cent = new JPanel(new BorderLayout());
+			butts[0]=new JButton("Doubleizer: off");
+			butts[0].addActionListener(this);
+			butts[1]=new JButton("Lachizer: off");
+			butts[1].addActionListener(this);
+			butts[2]=new JButton("Exit");
+			butts[2].addActionListener(this);
+			cent.add(butts[0], BorderLayout.NORTH);
+			cent.add(butts[1], BorderLayout.CENTER);
+			cent.add(butts[2],"South");
+			this.setVisible(true);
+			
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource()==butts[0]){
+				butts[0].setText("Doubleizer: on");
+				options[0]=true;
+			}
+			if(e.getSource()==butts[1]){
+				butts[1].setText("Lachizer: on");
+				options[1]=true;
+			}
+			if(e.getSource()==butts[2]){
+				if(options[0]){
+					f =new Doubleizer();
+					if(options[1]){
+						f.setNextf(new Boese());
+					}
+				}else if (options[1]) {
+					f = new Boese();
+				}
+			}
+		}
 	}
 }
