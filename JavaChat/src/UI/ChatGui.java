@@ -24,7 +24,7 @@ public class ChatGui extends JFrame {
 	private JButton send, options, connectb;
 	private JTextField sip, port, uname, smsg;
 	private JTextArea chatLog;
-	private AList acl = new AList();
+	private AList acl = new AList(this);
 	private RecClient mother;
 	private boolean connected = false;
 
@@ -96,7 +96,10 @@ public class ChatGui extends JFrame {
 	 * public static void main(String[] args) { new ChatGui(null); }
 	 **/
 	public class AList implements ActionListener {
-
+		ChatGui mom;
+		public AList(ChatGui m) {
+			mom = m;
+		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == connectb) {
@@ -115,6 +118,9 @@ public class ChatGui extends JFrame {
 				mother.write(new MsgData(uname.getText(), smsg.getText()));
 				smsg.setText(Messages.getString("ChatGui.17")); //$NON-NLS-1$
 			}
+			if(e.getSource()==options){
+				new JOptions(mom);
+			}
 
 		}
 
@@ -131,13 +137,14 @@ public class ChatGui extends JFrame {
 			cent = new JPanel(new BorderLayout());
 			butts[0]=new JButton("Doubleizer: off");
 			butts[0].addActionListener(this);
-			butts[1]=new JButton("Lachizer: off");
+			butts[1]=new JButton("boese: off");
 			butts[1].addActionListener(this);
 			butts[2]=new JButton("Exit");
 			butts[2].addActionListener(this);
 			cent.add(butts[0], BorderLayout.NORTH);
 			cent.add(butts[1], BorderLayout.CENTER);
 			cent.add(butts[2],"South");
+			this.add(cent);
 			this.setVisible(true);
 			
 		}
@@ -148,18 +155,21 @@ public class ChatGui extends JFrame {
 				options[0]=true;
 			}
 			if(e.getSource()==butts[1]){
-				butts[1].setText("Lachizer: on");
+				butts[1].setText("Boese: on");
 				options[1]=true;
 			}
 			if(e.getSource()==butts[2]){
-				if(options[0]){
-					f =new Doubleizer();
-					if(options[1]){
-						f.setNextf(new Boese());
+				if(options[1]){
+					f =new Boese();
+					if(options[0]){
+						f.setNextf(new Doubleizer());
 					}
-				}else if (options[1]) {
-					f = new Boese();
+				}else if (options[0]) {
+					f = new Doubleizer();
 				}
+				mother.enableFilter(f);
+				this.setVisible(false);
+				this.dispose();
 			}
 		}
 	}

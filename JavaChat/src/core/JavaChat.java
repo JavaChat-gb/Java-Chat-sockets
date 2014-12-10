@@ -8,7 +8,7 @@ import networking.OReciver;
 import networking.OSender;
 import networking.RecClient;
 import networking.SeRe;
-import Filter.Doubleizer;
+import Filter.Boese;
 import Filter.Filter;
 import UI.ChatGui;
 
@@ -19,22 +19,22 @@ import UI.ChatGui;
 public class JavaChat implements RecClient {
 	private SeRe net;
 	private ChatGui gui;
-	private Filter z;
+	private Filter z =null;
 	public boolean connected = false;
 	
 	private OSender sendd = new OSender(9999);
 	private OReciver reciv;
 	
 	public JavaChat() {
-		z = new Doubleizer();
 		gui = new ChatGui(this);
 	}
 
 	@Override
 	public void addMSG(MsgData md) {
+		if(z!=null){
 		z.setText(md.getMsg());
-		MsgData dm = new MsgData(md.getSender(), z.performFilter());
-		gui.addMsg(dm);
+		md= new MsgData(md.getSender(), z.performFilter().toUpperCase());}
+		gui.addMsg(md);
 	}
 
 	public static void main(String[] args) {

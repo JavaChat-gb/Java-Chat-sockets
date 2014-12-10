@@ -47,9 +47,8 @@ public class OSender {
         public void destroy(){
         	try {
 				socket.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				//shit happens
 			}
         }
         /**
