@@ -33,8 +33,8 @@ public class JavaChat implements RecClient {
 	public void addMSG(MsgData md) {
 		if(z!=null){
 		z.setText(md.getMsg());
-		md= new MsgData(md.getSender(), z.performFilter().toUpperCase());}
-		gui.addMsg(md);
+		md= new MsgData(md.getSender(), (z.performFilter().toUpperCase()));}
+		gui.addMsg(new MsgData(md.getSender(), (md.getMsg().toUpperCase())));
 	}
 
 	public static void main(String[] args) {
